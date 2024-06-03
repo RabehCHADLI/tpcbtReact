@@ -18,9 +18,11 @@ import Yone from '../img/yone.gif';
 import Zac from '../img/zac.gif';
 import Zed from '../img/zed.gif';
 import Ziggs from '../img/ziggs.gif';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { rabeh } from '../features/fight/fightSlice'
 
 const SelectChampions = () => {
+    const dispatch = useDispatch
     const [champData, setChampData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [img, setImg] = useState(Aatrox);
@@ -64,24 +66,20 @@ const SelectChampions = () => {
         return str.replace(/<[^>]*>/g, '');
     };
     const affichageChamp = (e) => {
-        const champ = e.target.value;
-        setNamechamp(champ);
-        setImg(tableauImage[champ]);
-        fetchChampion(champ);
-        const updateSelectedChamps = (champ) => {
-            setSelectedChamps((prevSelectedChamps) => {
-                prevSelectedChamps.push(champData);
+        const selectedChamp = e.target.value;
+        setNamechamp(selectedChamp);
+        setImg(tableauImage[selectedChamp]);
+        fetchChampion(selectedChamp);
+        const updatedSelectedChamps = [...selectedChamps, champData];
+        setSelectedChamps(updatedSelectedChamps);
 
-                if (prevSelectedChamps.length >= 4) {
-                    setVerifSelect(true);
-                }
-                return prevSelectedChamps;
-            });
-        };
-        updateSelectedChamps(state.selectedChamp)
+        if (selectedChamps.length >= 4) {
+            dispatch(rabeh(30))
+
+            setVerifSelect(true);
+        }
     }
 
-    console.log(selectedChamp);
     useEffect(() => {
         fetchChampion(namechamp);
     }, [namechamp]);

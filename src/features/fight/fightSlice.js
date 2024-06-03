@@ -85,6 +85,10 @@ export const fightSlice = createSlice({
                     player.tour = true
                 })
             }
+        },
+        rabeh: (state, action) => {
+            const champ = action.payload['champs']
+            console.log(champ);
         }
     }
 });
@@ -93,3 +97,4 @@ export default fightSlice.reducer;
 export const { hitBack } = fightSlice.actions
 export const { hitMonster } = fightSlice.actions
 export const { heal } = fightSlice.actions
+export const { rabeh } = fightSlice.actions

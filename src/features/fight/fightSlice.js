@@ -1,23 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import imagemonster from '../../img/nash.gif'
-import aatrox from '../../img/aatrox.gif'
-import ahri from '../../img/ahri.gif'
-import fiddlesticks from '../../img/fiddlesticks.gif'
-import kayle from '../../img/kayle.gif'
-import kayn from '../../img/kayn.gif'
-import kled from '../../img/kled.gif'
-import maokai from '../../img/maokai.gif'
-import pantheon from '../../img/pantheon.gif'
-import rammus from '../../img/rammus.gif'
-import rek_sai from '../../img/rek_sai.gif'
-import shen from '../../img/shen.gif'
-import singed from '../../img/singed.gif'
-import talon from '../../img/singed.gif'
-import yi from '../../img/singed.gif'
-import yone from '../../img/singed.gif'
-import zac from '../../img/singed.gif'
-import zed from '../../img/singed.gif'
-import ziggs from '../../img/singed.gif'
+import Aatrox from '../../img/aatrox.gif'
+import Ahri from '../../img/ahri.gif'
+import Fiddlesticks from '../../img/fiddlesticks.gif'
+import Kayle from '../../img/kayle.gif'
+import Kayn from '../../img/kayn.gif'
+import Kled from '../../img/kled.gif'
+import Maokai from '../../img/maokai.gif'
+import Pantheon from '../../img/pantheon.gif'
+import Rammus from '../../img/rammus.gif'
+import Rek_sai from '../../img/rek_sai.gif'
+import Shen from '../../img/shen.gif'
+import Singed from '../../img/singed.gif'
+import Talon from '../../img/singed.gif'
+import Yi from '../../img/singed.gif'
+import Yone from '../../img/singed.gif'
+import Zac from '../../img/singed.gif'
+import Zed from '../../img/singed.gif'
+import Ziggs from '../../img/singed.gif'
+
+const tableauImage = {
+    Aatrox, Ahri, Fiddlesticks, Kayle, Kayn, Kled, Maokai, Pantheon,
+    Rammus, Rek_sai, Shen, Singed, Talon, Yi, Yone, Zac, Zed, Ziggs
+};
 const initialState = {
 
     players: [
@@ -60,7 +65,6 @@ export const fightSlice = createSlice({
             const id = action.payload['id']
             const player = state.players[id];
             const dmg = Math.floor(Math.random() * (10, 15))
-            console.log(dmg);
             player.pv = player.pv - dmg
 
         },
@@ -87,8 +91,24 @@ export const fightSlice = createSlice({
             }
         },
         rabeh: (state, action) => {
-            const champ = action.payload['champs']
-            console.log(champ);
+            const champs = action.payload
+            let i = 0
+            champs.map((player) => {
+                player.id = i
+                player.pv = 100
+                player.pvMax = 100
+                player.mana = 100
+                player.manaMax = 100
+                player.spellDMG1 = 10
+                player.spellDMG2 = 30
+                player.spellHeal = 20
+                player.spellRegenMana = 30
+                player.image = tableauImage[player.name]
+
+                player.tour = true
+                i++
+            })
+            state.players = champs
         }
     }
 });

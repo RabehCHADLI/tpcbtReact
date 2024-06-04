@@ -23,7 +23,6 @@ const ButtonCapacity = props => {
                         }));
                     }, 1000);
 
-                    console.log('blabla');
                 }
                 ;
                 break;
@@ -69,15 +68,6 @@ const ButtonCapacity = props => {
             default:
                 break;
         }
-
-
-
-
-
-
-
-
-
     }
 
 

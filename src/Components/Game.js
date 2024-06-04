@@ -5,16 +5,14 @@ import React from 'react'
 
 const Game = (props) => {
   return (
-    <div className='App'>
 
-      <div className="App">
-        <Monster />
-        <br></br>
-        <section className="container-fluid">
-          <PlayerList />
+    <div className="App">
+      <Monster />
+      <br></br>
+      <section className="container-fluid">
+        <PlayerList />
 
-        </section >
-      </div>
+      </section >
     </div>
   )
 }

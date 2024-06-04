@@ -22,15 +22,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rabeh } from '../features/fight/fightSlice'
 
 const SelectChampions = () => {
-    const dispatch = useDispatch
+    const dispatch = useDispatch()
     const [champData, setChampData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [img, setImg] = useState(Aatrox);
     const [namechamp, setNamechamp] = useState('Aatrox');
     const [selectedChamps, setSelectedChamps] = useState([]);
     const [verifSelect, setVerifSelect] = useState(false);
-    let players = useSelector((state) => state.fight.players)
-
     const tableauImage = {
         Aatrox, Ahri, Fiddlesticks, Kayle, Kayn, Kled, Maokai, Pantheon,
         Rammus, Rek_sai, Shen, Singed, Talon, Yi, Yone, Zac, Zed, Ziggs
@@ -73,8 +71,8 @@ const SelectChampions = () => {
         const updatedSelectedChamps = [...selectedChamps, champData];
         setSelectedChamps(updatedSelectedChamps);
 
-        if (selectedChamps.length >= 4) {
-            dispatch(rabeh(30))
+        if (selectedChamps.length >= 3) {
+            dispatch(rabeh(selectedChamps))
 
             setVerifSelect(true);
         }
@@ -88,8 +86,8 @@ const SelectChampions = () => {
         verifSelect ? (
             <Game />
         ) : (
-            <div className='container'>
-                <h1 className='text-center m-3'>Choisit 4 Champions</h1>
+            <div className='container-fluid bgselect'>
+                <h1 className='text-center'>Choisit 4 Champions</h1>
                 <div className='select text-center'>
                     <select onChange={affichageChamp} style={{ width: '300px' }}>
                         {champions.map((champion) => (

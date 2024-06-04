@@ -1,5 +1,16 @@
 .App {
-  text-align: center;
+  background-image: url(../img/fight.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.blur {
+  filter: blur(4px);
+}
+
+body {
+  padding: 0;
 }
 
 .App-logo {

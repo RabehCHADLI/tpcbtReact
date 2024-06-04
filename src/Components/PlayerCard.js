@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux';
 
 
 const PlayerCard = (props) => {
-    let color = '#0A323C'
+    let color = 0
   const playertour = useSelector(state => state.fight.players[props.player.id].tour);
+  
   if (playertour == false) {
-      color = '#5B5A56'
+        color = '5px'
+        
       
       }
       
@@ -17,7 +19,7 @@ const PlayerCard = (props) => {
           <div className='col-lg-4 col-md-4 col-sm-11'>
             
 
-                  <div className="card-body text-center rounded-3 p-2 " style={{ backgroundColor: color }}>
+                  <div className="card-body text-center rounded-3 p-2 " >
                     <img src={props.player.image} alt="" />
                     <h5 className="card-title">{props.player.name}</h5>
                     <ProgressBar pv={props.player.pv} pvMax={props.player.pvMax} faType='fa-heart' barName=' : pv ' bgType='bg-danger'  />
@@ -31,7 +33,7 @@ const PlayerCard = (props) => {
                                 
                             ) : 
                         <>
-                        <div className='container-fluid'>
+                                  <div className='container-fluid' style={{ filter: `blur(${color})`, transition :'0.7s' }}>
                             <div className='row'>
                                 <div className='col m-3'>
                              <ButtonCapacity spell={props.player.spellDMG1} idspell={1} spellname={'DMG LEGER'} id={props.player.id}/> 

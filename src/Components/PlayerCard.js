@@ -5,18 +5,28 @@ import { useSelector } from 'react-redux';
 
 
 const PlayerCard = (props) => {
-    let color = 0
-  const playertour = useSelector(state => state.fight.players[props.player.id].tour);
-  
-  if (playertour == false) {
+    let state = useSelector(state => state.fight)
+    let nbPlayersAlive = 0;
+    state.players.map((player) => {
+        if (player.pv > 0) {
+            nbPlayersAlive++;
+        }
+    })
+    console.log('nbplayer', nbPlayersAlive);
+    let color = '0px'
+state.isPlayerAttacking.map((playerid)=>{
+    if (playerid === props.player.id) {
         color = '5px'
-        
-      
-      }
+    }
+})
+if (state.isPlayerAttacking.length >= nbPlayersAlive) {
+    color = "0px"
+    
+}
       
       return (
 
-          <div className='col-lg-4 col-md-4 col-sm-11'>
+          <div className='col-lg-3 m-2 col-md-4 col-sm-11'>
             
 
                   <div className="card-body text-center rounded-3 p-2 " >
@@ -30,10 +40,9 @@ const PlayerCard = (props) => {
                         <div >
                             {props.player.pv <= 0 ? (
                                 <h3>MORT</h3> 
-                                
                             ) : 
                         <>
-                                  <div className='container-fluid' style={{ filter: `blur(${color})`, transition :'0.7s' }}>
+                                  <div className='container-fluid' style={{ filter: `blur(${color})` }}>
                             <div className='row'>
                                 <div className='col m-3'>
                              <ButtonCapacity spell={props.player.spellDMG1} idspell={1} spellname={'DMG LEGER'} id={props.player.id}/> 

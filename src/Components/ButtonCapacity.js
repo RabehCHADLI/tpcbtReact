@@ -1,17 +1,42 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { hitMonster, hitBack, heal } from '../features/fight/fightSlice';
+import { hitMonster, hitBack, heal, removetour, addIdIsPlayerAttacking } from '../features/fight/fightSlice';
 
-let verif = true
 
 const ButtonCapacity = props => {
+    const state = useSelector(state => state.fight)
+    function verifPlayer(idplayer, isPlayerAttacking) {
+        let allowed = true;
+        let nbPlayersAlive = 0;
+        state.players.map((player) => {
+            if (player.pv > 0) {
+                nbPlayersAlive++;
+            }
+        })
+        if (isPlayerAttacking.length === nbPlayersAlive) {
+            dispatch(removetour())
+        }
+        else {
+            isPlayerAttacking.map((player) => {
+                if (player === idplayer) {
+                    allowed = false;
+                }
+
+            })
+        }
+        console.log(isPlayerAttacking);
+
+        return allowed;
+    }
     const players = useSelector(state => state.fight.players)
     const dispatch = useDispatch();
     const action = () => {
+        let i = verifPlayer(props.id, state.isPlayerAttacking)
+        console.log('verif', i);
         switch (props.idspell) {
             case 1:
-                let tour = players[props.id].tour
-                if (tour == true) {
+                if (verifPlayer(props.id, state.isPlayerAttacking)) {
+
                     dispatch(hitMonster({
                         id: props.id,
                         dmg: props.spell
@@ -19,16 +44,16 @@ const ButtonCapacity = props => {
                     setTimeout(() => {
                         dispatch(hitBack({
                             id: props.id,
-
                         }));
                     }, 1000);
+                    dispatch(addIdIsPlayerAttacking(props.id))
 
                 }
-                ;
+
                 break;
             case 2:
-                let tour2 = players[props.id].tour
-                if (tour2 == true) {
+                if (verifPlayer(props.id, state.isPlayerAttacking)) {
+
                     dispatch(hitMonster({
                         id: props.id,
                         dmg: props.spell
@@ -39,29 +64,37 @@ const ButtonCapacity = props => {
                             dmg: 10
                         }));
                     }, 1000);
+                    dispatch(addIdIsPlayerAttacking(props.id))
 
                 }
-
                 break;
             case 3:
+                if (verifPlayer(props.id, state.isPlayerAttacking)) {
 
-                const playerpv = players[props.id].pv
-                if (playerpv > 0 && playerpv > 0) {
-                    dispatch(heal({
-                        id: props.id,
-                        heal: props.spellheal
-                    }))
+
+                    if (state.players[props.id].pv > 0) {
+
+                        dispatch(heal({
+                            id: props.id,
+                            heal: props.spellheal
+                        }))
+                    }
+                    dispatch(addIdIsPlayerAttacking(props.id))
+
+
                 }
 
                 break;
             case 4:
+                if (verifPlayer(props.id)) {
 
-                const playerpv2 = players[props.id].pv
-                if (playerpv > 0 && playerpv2 > 0) {
+
+
                     dispatch(heal({
                         id: props.id,
                         heal: props.spellheal
                     }))
+
                 }
                 break;
 

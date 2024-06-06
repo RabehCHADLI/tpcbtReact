@@ -19,7 +19,7 @@ import Zac from '../img/zac.gif';
 import Zed from '../img/zed.gif';
 import Ziggs from '../img/ziggs.gif';
 import { useDispatch, useSelector } from 'react-redux';
-import { rabeh } from '../features/fight/fightSlice'
+import { saveChampSelect } from '../features/fight/fightSlice'
 
 const SelectChampions = () => {
     const dispatch = useDispatch()
@@ -67,16 +67,23 @@ const SelectChampions = () => {
         const selectedChamp = e.target.value;
         setNamechamp(selectedChamp);
         setImg(tableauImage[selectedChamp]);
-        fetchChampion(selectedChamp);
+
+
+
+    }
+    function championseleted() {
+
+        fetchChampion(namechamp);
         const updatedSelectedChamps = [...selectedChamps, champData];
         setSelectedChamps(updatedSelectedChamps);
-
-        if (selectedChamps.length >= 3) {
-            dispatch(rabeh(selectedChamps))
+        alert('Tu a choisis ' + namechamp)
+        if (selectedChamps.length === 3) {
+            dispatch(saveChampSelect(selectedChamps))
 
             setVerifSelect(true);
         }
     }
+
 
     useEffect(() => {
         fetchChampion(namechamp);
@@ -94,6 +101,7 @@ const SelectChampions = () => {
                             <option key={champion.value} value={champion.value}>{champion.label}</option>
                         ))}
                     </select>
+                    <button onClick={championseleted}>LE BUUUUUUTTON</button>
                 </div>
                 <div className="container-fluid">
                     <div className="row justify-content-center">

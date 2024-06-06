@@ -368,7 +368,12 @@ fin animation degats
 */
 
 
-
+.victory {
+  background-image: url(../img/victory.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
 
 /*

@@ -24,15 +24,10 @@ const tableauImage = {
     Rammus, Rek_sai, Shen, Singed, Talon, Yi, Yone, Zac, Zed, Ziggs
 };
 const initialState = {
-
-    players: [
-
-        // { name: "John", image: 'future image', pv: 100, pvMax: 100, mana: 100, manaMax: 100, id: 0, tour: true, spellDMG1: 10, spellDMG2: 30, lourdDisponible: true, spellHeal: 20, spellRegenMana: 30 },
-        // { name: "Jack", image: 'future image', pv: 100, pvMax: 100, mana: 100, manaMax: 100, id: 1, tour: true, spellDMG1: 10, spellDMG2: 30, lourdDisponible: true, spellHeal: 20, spellRegenMana: 30 },
-        // { name: "Jessy", image: 'future image', pv: 100, pvMax: 100, mana: 100, manaMax: 100, id: 2, tour: true, spellDMG1: 10, spellDMG2: 30, lourdDisponible: true, spellHeal: 20, spellRegenMana: 30 },
-
-    ],
-    monster: [{ name: 'Baron Nashor', pv: 3600, tour: true, image: imagemonster }]
+    isPlayerAttacking: [],
+    monsterAnimationDmg: false,
+    players: [],
+    monster: [{ name: 'Baron Nashor', pv: 3800, tour: true, image: imagemonster }]
 };
 
 export const fightSlice = createSlice({
@@ -49,13 +44,14 @@ export const fightSlice = createSlice({
             let player2 = players[1]
             let player3 = players[2]
 
-            if (player1.tour == false && player2.tour == false && player3.tour == false) {
+            if (state.isPlayerAttacking.length === 4) {
 
                 const rand = Math.floor(Math.random() * (2))
                 const player = state.players[rand];
                 const dmg = 25
                 player.pv = player.pv - dmg
-
+            }
+            if (player1.tour == false && player2.tour == false && player3.tour == false) {
                 players.map((player) => {
                     player.tour = true
                 })
@@ -64,14 +60,13 @@ export const fightSlice = createSlice({
         hitBack: (state, action) => {
             const id = action.payload['id']
             const player = state.players[id];
-            const dmg = Math.floor(Math.random() * (10, 15))
+            const dmg = Math.floor(Math.random() * (50, 60))
             player.pv = player.pv - dmg
 
         },
         heal: (state, action) => {
             const id = action.payload['id']
             const player = state.players[id]
-            player.tour = false
 
             if (player.pv > 70) {
                 player.pv = 100
@@ -90,7 +85,7 @@ export const fightSlice = createSlice({
                 })
             }
         },
-        rabeh: (state, action) => {
+        saveChampSelect: (state, action) => {
             const champs = action.payload
             let i = 0
             champs.map((player) => {
@@ -99,7 +94,7 @@ export const fightSlice = createSlice({
                 player.pvMax = 100
                 player.mana = 100
                 player.manaMax = 100
-                player.spellDMG1 = 10
+                player.spellDMG1 = 100
                 player.spellDMG2 = 30
                 player.spellHeal = 20
                 player.spellRegenMana = 30
@@ -109,6 +104,12 @@ export const fightSlice = createSlice({
                 i++
             })
             state.players = champs
+        },
+        removetour: (state) => {
+            state.isPlayerAttacking = [];
+        },
+        addIdIsPlayerAttacking: (state, action) => {
+            state.isPlayerAttacking.push(action.payload);
         }
     }
 });
@@ -117,4 +118,6 @@ export default fightSlice.reducer;
 export const { hitBack } = fightSlice.actions
 export const { hitMonster } = fightSlice.actions
 export const { heal } = fightSlice.actions
-export const { rabeh } = fightSlice.actions
+export const { saveChampSelect } = fightSlice.actions
+export const { removetour } = fightSlice.actions
+export const { addIdIsPlayerAttacking } = fightSlice.actions

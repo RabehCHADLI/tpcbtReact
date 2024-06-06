@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ProgressBar from './ProgressBar';
 import ButtonCapacity from './ButtonCapacity';
 import { useSelector } from 'react-redux';
@@ -6,31 +6,45 @@ import { useSelector } from 'react-redux';
 
 const PlayerCard = (props) => {
     let state = useSelector(state => state.fight)
+    const animeHitplayer = useRef()
+    const pvPlayer = useRef(props.player.pv)
+    useEffect(() => {
+        if (props.player.pv < pvPlayer.current) {
+            animeHitplayer.current.classList.add('animate__flash')
+        }
+        setTimeout(() => {
+            if (props.player.pv < pvPlayer.current) {
+    
+                animeHitplayer.current.classList.remove('animate__flash')
+            }
+    
+        }, 800);
+    }, [props.player.pv]);
     let nbPlayersAlive = 0;
     state.players.map((player) => {
         if (player.pv > 0) {
             nbPlayersAlive++;
         }
     })
-    console.log('nbplayer', nbPlayersAlive);
     let color = '0px'
 state.isPlayerAttacking.map((playerid)=>{
     if (playerid === props.player.id) {
         color = '5px'
     }
-})
-if (state.isPlayerAttacking.length >= nbPlayersAlive) {
-    color = "0px"
     
-}
-      
+    if (state.isPlayerAttacking.length >= nbPlayersAlive) {
+        color = "0px"
+        
+    }
+    
+})
       return (
 
           <div className='col-lg-3 m-2 col-md-4 col-sm-11'>
             
 
                   <div className="card-body text-center rounded-3 p-2 " >
-                    <img src={props.player.image} alt="" />
+                  <img ref={animeHitplayer} src={props.player.image} alt="" className='animate__animated'/>
                     <h5 className="card-title">{props.player.name}</h5>
                     <ProgressBar pv={props.player.pv} pvMax={props.player.pvMax} faType='fa-heart' barName=' : pv ' bgType='bg-danger'  />
                     <ProgressBar pv={props.player.mana} pvMax={props.player.manaMax} faType='fa-fire-alt' barName=' : mana ' />
@@ -73,6 +87,7 @@ if (state.isPlayerAttacking.length >= nbPlayersAlive) {
        
     )
 }
+
 
 export default PlayerCard
 

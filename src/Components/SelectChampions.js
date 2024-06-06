@@ -67,22 +67,25 @@ const SelectChampions = () => {
         const selectedChamp = e.target.value;
         setNamechamp(selectedChamp);
         setImg(tableauImage[selectedChamp]);
-
-
-
     }
+
     function championseleted() {
-
         fetchChampion(namechamp);
-        const updatedSelectedChamps = [...selectedChamps, champData];
-        setSelectedChamps(updatedSelectedChamps);
-        alert('Tu a choisis ' + namechamp)
-        if (selectedChamps.length === 3) {
-            dispatch(saveChampSelect(selectedChamps))
 
-            setVerifSelect(true);
-        }
+        setSelectedChamps((prevSelectedChamps) => {
+            const updatedSelectedChamps = [...prevSelectedChamps, champData];
+
+            if (updatedSelectedChamps.length === 3) {
+                dispatch(saveChampSelect(updatedSelectedChamps));
+                setVerifSelect(true);
+            }
+
+            return updatedSelectedChamps;
+        });
+
+        alert('Tu as choisi ' + namechamp);
     }
+
 
 
     useEffect(() => {
@@ -93,15 +96,15 @@ const SelectChampions = () => {
         verifSelect ? (
             <Game />
         ) : (
-            <div className='container-fluid bgselect'>
-                <h1 className='text-center'>Choisit 4 Champions</h1>
-                <div className='select text-center'>
-                    <select onChange={affichageChamp} style={{ width: '300px' }}>
+            <div className='container-fluid bgselect text-white'>
+                <h1 className='text-center'>Choisit 3 Champions</h1>
+                <div className='select text-center row '>
+                    <select onChange={affichageChamp} style={{ width: '200px' }}>
                         {champions.map((champion) => (
                             <option key={champion.value} value={champion.value}>{champion.label}</option>
                         ))}
                     </select>
-                    <button onClick={championseleted}>LE BUUUUUUTTON</button>
+                    <button style={{ background: '#0a323cc7', color: '#c89a3a' }} className=' col-2 ms-5 btn' onClick={championseleted}>Choisir</button>
                 </div>
                 <div className="container-fluid">
                     <div className="row justify-content-center">
@@ -115,16 +118,17 @@ const SelectChampions = () => {
                             <img className='' src={img} alt={namechamp} />
                         </div>
                     </div>
-                    <div className='border border-1 p-3 rounded-2 animationhover'>
-                        {champData?.lore}
+                    <div className='p-3 rounded-2 animationhover' >
+                        <p>{champData?.lore}</p>
                     </div>
                     <div className='row justify-content-center '>
+                        <h2 className='text-center text-white'>Spells</h2>
                         {champData?.spells.map((spell, i) => {
                             return (
-                                <div className="card m-3 animationhover" style={{ width: '18rem' }}>
+                                <div className="m-3 animationhover rounded-3 p-3" style={{ width: '18rem' }}>
                                     <div className="card-body">
-                                        <h5 className="card-title">{spell.name}</h5>
-                                        <p className="card-text">{removeHTMLTags(spell.description)}</p>
+                                        <h5 className="card-title fw-bold">{spell.name}</h5>
+                                        <p className="card-text fw-semibold">{removeHTMLTags(spell.description)}</p>
                                     </div>
                                 </div>
                             )
@@ -133,7 +137,8 @@ const SelectChampions = () => {
                 </div>
             </div>
         )
-    );
+    )
 }
+
 
 export default SelectChampions;

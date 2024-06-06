@@ -1,44 +1,50 @@
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from './ProgressBar';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Monster = () => {
+  const [i, setI] = useState(false);
   const dispatch = useDispatch();
   const monster = useSelector(state => state.fight.monster[0]);
-  const animeHit = useRef()
-  const pvmonster = useRef(monster.pv)
+  const animeHit = useRef(null);
+  const pvmonster = useRef(monster.pv);
   const state = useSelector(state => state.fight);
+  const players = state.players;
 
   useEffect(() => {
-    const div = document.getElementById('bg');
-    if (div) {
-      if (monster.pv <= 0) {
-        div.classList.remove('App');
-      } else {
-        div.classList.add('App');
-      }
+    if (animeHit.current && monster.pv < pvmonster.current) {
+      animeHit.current.classList.add('animate__flash');
+
+      setTimeout(() => {
+        if (animeHit.current) {
+          animeHit.current.classList.remove('animate__flash');
+        }
+      }, 800);
     }
+    pvmonster.current = monster.pv; // Update pvmonster to the latest pv value
   }, [monster.pv]);
+
   useEffect(() => {
-    if (monster.pv < pvmonster.current) {
-      animeHit.current.classList.add('animate__flash')
-    }
-    setTimeout(() => {
-      if (monster.pv < pvmonster.current) {
+    // Add a guard condition to ensure initial values don't trigger the effect
+    if (monster.pv !== undefined && monster.pv <= 0) {
+      setI(true);
+    } else {
+      let player1 = players[0];
+      let player2 = players[1];
+      let player3 = players[2];
 
-        animeHit.current.classList.remove('animate__flash')
+      // Ensure all players exist and have `pv` defined before checking their `pv` values
+      if (player1 && player2 && player3 && player1.pv <= 0 && player2.pv <= 0 && player3.pv <= 0) {
+        setI(true);
       }
-
-    }, 800);
-  }, [monster.pv]);
-
-
+    }
+  }, [monster.pv, players]);
 
   return (
-    monster.pv <= 0 ? (
+    i ? (
       <div className='victory' style={{ height: '43rem', width: '100%' }}>
         <form action="">
-          <button type='' className='btn btn-danger'>RELANCER</button>
+          <button type='button' className='btn btn-danger'>RELANCER</button>
         </form>
       </div>
     ) : (
@@ -53,7 +59,3 @@ const Monster = () => {
 };
 
 export default Monster;
-
-
-
-

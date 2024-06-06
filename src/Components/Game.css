@@ -1,8 +1,9 @@
 .App {
-  background-image: url(../img/fight.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #0a323c;
+}
+
+.bgselect {
+  background-color: #000000;
 }
 
 .blur {
@@ -34,11 +35,16 @@ body {
   color: #61dafb;
 }
 
+
+.animationhover {
+  height: 100%;
+  color: white;
+}
+
 .animationhover:hover {
   transition: 1s;
-  background-color: #0A323C;
+  filter: blur(0px);
   color: #c89a3a;
-  height: 100%;
 }
 
 @keyframes App-logo-spin {
@@ -88,11 +94,7 @@ body {
   font-size: 30;
 }
 
-.bgselect {
-  background-image: url(../img/selectchamp.jpg);
-  background-size: cover;
-  background-position: center;
-}
+
 
 .bgfight {
   background-image: url(../img/fight.jpg);
@@ -116,7 +118,7 @@ body {
   outline: 0;
   border: 0px outset #000000;
   border-radius: 5px;
-  background: #0b343f;
+  background: #0a323cc7;
   color: #ca9c3c;
   appearance: none;
   -webkit-appearance: none;

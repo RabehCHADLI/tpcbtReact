@@ -12,12 +12,12 @@ import Rammus from '../../img/rammus.gif'
 import Rek_sai from '../../img/rek_sai.gif'
 import Shen from '../../img/shen.gif'
 import Singed from '../../img/singed.gif'
-import Talon from '../../img/singed.gif'
-import Yi from '../../img/singed.gif'
-import Yone from '../../img/singed.gif'
-import Zac from '../../img/singed.gif'
-import Zed from '../../img/singed.gif'
-import Ziggs from '../../img/singed.gif'
+import Talon from '../../img/talon.gif'
+import Yi from '../../img/yi.gif'
+import Yone from '../../img/yone.gif'
+import Zac from '../../img/zac.gif'
+import Zed from '../../img/zed.gif'
+import Ziggs from '../../img/ziggs.gif'
 
 const tableauImage = {
     Aatrox, Ahri, Fiddlesticks, Kayle, Kayn, Kled, Maokai, Pantheon,
@@ -27,7 +27,7 @@ const initialState = {
     isPlayerAttacking: [],
     monsterAnimationDmg: false,
     players: [],
-    monster: [{ name: 'Baron Nashor', pv: 3800, tour: true, image: imagemonster }]
+    monster: [{ name: 'Baron Nashor', pv: 3800, pvMax: 3800, tour: true, image: imagemonster }]
 };
 
 export const fightSlice = createSlice({
@@ -95,12 +95,11 @@ export const fightSlice = createSlice({
                 player.mana = 100
                 player.manaMax = 100
                 player.spellDMG1 = 100
-                player.spellDMG2 = 30
+                player.spellDMG2 = 300
+                player.lourdDisponible = true
                 player.spellHeal = 20
                 player.spellRegenMana = 30
                 player.image = tableauImage[player.name]
-
-                player.tour = true
                 i++
             })
             state.players = champs
@@ -110,6 +109,10 @@ export const fightSlice = createSlice({
         },
         addIdIsPlayerAttacking: (state, action) => {
             state.isPlayerAttacking.push(action.payload);
+        },
+        attaqueLourde: (state, action) => {
+            const id = action.payload
+            state.players[id].lourdDisponible = !state.players[id].lourdDisponible
         }
     }
 });
@@ -121,3 +124,4 @@ export const { heal } = fightSlice.actions
 export const { saveChampSelect } = fightSlice.actions
 export const { removetour } = fightSlice.actions
 export const { addIdIsPlayerAttacking } = fightSlice.actions
+export const { attaqueLourde } = fightSlice.actions

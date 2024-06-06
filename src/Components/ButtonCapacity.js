@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { hitMonster, hitBack, heal, removetour, addIdIsPlayerAttacking } from '../features/fight/fightSlice';
+import { hitMonster, hitBack, heal, removetour, addIdIsPlayerAttacking, attaqueLourde } from '../features/fight/fightSlice';
 
 
 const ButtonCapacity = props => {
@@ -11,9 +11,12 @@ const ButtonCapacity = props => {
         state.players.map((player) => {
             if (player.pv > 0) {
                 nbPlayersAlive++;
+                console.log('nb player alive', nbPlayersAlive);
             }
         })
-        if (isPlayerAttacking.length === nbPlayersAlive) {
+        if (isPlayerAttacking.length === nbPlayersAlive || nbPlayersAlive == 1) {
+            dispatch(removetour())
+        } else if (nbPlayersAlive == 2) {
             dispatch(removetour())
         }
         else {
@@ -21,10 +24,8 @@ const ButtonCapacity = props => {
                 if (player === idplayer) {
                     allowed = false;
                 }
-
             })
         }
-        console.log(isPlayerAttacking);
 
         return allowed;
     }
@@ -32,10 +33,10 @@ const ButtonCapacity = props => {
     const dispatch = useDispatch();
     const action = () => {
         let i = verifPlayer(props.id, state.isPlayerAttacking)
-        console.log('verif', i);
         switch (props.idspell) {
             case 1:
                 if (verifPlayer(props.id, state.isPlayerAttacking)) {
+                    dispatch(attaqueLourde(props.id))
 
                     dispatch(hitMonster({
                         id: props.id,
@@ -52,18 +53,23 @@ const ButtonCapacity = props => {
 
                 break;
             case 2:
-                if (verifPlayer(props.id, state.isPlayerAttacking)) {
+                if (state.players[props.id].lourdDisponible === true) {
+                    if (verifPlayer(props.id, state.isPlayerAttacking)) {
 
-                    dispatch(hitMonster({
-                        id: props.id,
-                        dmg: props.spell
-                    }));
-                    setTimeout(() => {
-                        dispatch(hitBack({
+                        dispatch(attaqueLourde(props.id))
+                        console.log(state.players[props.id].lourdDisponible);
+                        dispatch(hitMonster({
                             id: props.id,
-                            dmg: 10
+                            dmg: props.spell,
+                            mana: 20
                         }));
-                    }, 1000);
+                        setTimeout(() => {
+                            dispatch(hitBack({
+                                id: props.id,
+                                dmg: 10
+                            }));
+                        }, 1000);
+                    }
                     dispatch(addIdIsPlayerAttacking(props.id))
 
                 }
@@ -73,10 +79,12 @@ const ButtonCapacity = props => {
 
 
                     if (state.players[props.id].pv > 0) {
+                        dispatch(attaqueLourde(props.id))
 
                         dispatch(heal({
                             id: props.id,
-                            heal: props.spellheal
+                            heal: props.spellheal,
+                            mana: 30
                         }))
                     }
                     dispatch(addIdIsPlayerAttacking(props.id))
@@ -87,6 +95,8 @@ const ButtonCapacity = props => {
                 break;
             case 4:
                 if (verifPlayer(props.id)) {
+
+                    dispatch(attaqueLourde(props.id))
 
 
 
